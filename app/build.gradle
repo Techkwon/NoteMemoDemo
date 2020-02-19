@@ -80,6 +80,12 @@ dependencies {
     def gsonVersion = "2.8.6"
     implementation "com.google.code.gson:gson:$gsonVersion"
 
-    // floating button@ https://github.com/Clans/FloatingActionButton
+    // floating button
+    // https://github.com/Clans/FloatingActionButton
     implementation 'com.github.clans:fab:1.6.4'
+
+    // image picker
+    // https://github.com/esafirm/android-image-picker
+    def imagePickerVersion = "2.2.0"
+    implementation "com.github.esafirm.android-image-picker:imagepicker:$imagePickerVersion"
 }

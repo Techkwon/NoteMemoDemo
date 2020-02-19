@@ -2,7 +2,7 @@ package com.example.notememodemo.repository
 
 import androidx.lifecycle.LiveData
 import com.example.notememodemo.dao.MemoDao
-import com.example.notememodemo.data.Memo
+import com.example.notememodemo.model.Memo
 
 class MemoRepository
 constructor(private val dao: MemoDao) {
@@ -20,7 +20,9 @@ constructor(private val dao: MemoDao) {
         return dao.getMemos()
     }
 
-    internal suspend fun insertMemo(memo: Memo) {
+    internal suspend fun getMemoById(id: Int): Memo = dao.getMemoById(id)
+
+    internal fun insertMemo(memo: Memo) {
         dao.insertMemo(memo)
     }
 }

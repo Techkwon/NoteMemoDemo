@@ -4,16 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.notememodemo.data.Memo
+import com.example.notememodemo.model.Memo
 
 @Database(entities = [Memo::class], version = 1)
+@TypeConverters(Memo.PhotoItemTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun memoDao(): MemoDao
 
     companion object {
-        const val DB_NAME = "line_memo_db"
+        private const val DB_NAME = "line_memo_db"
 
         private var instance: AppDatabase? = null
 
