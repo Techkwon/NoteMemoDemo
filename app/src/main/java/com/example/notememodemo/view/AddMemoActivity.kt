@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
 import com.example.notememodemo.R
+import com.example.notememodemo.adapter.AddPhotosAdapter
 import com.example.notememodemo.adapter.PhotosAdapter
 import com.example.notememodemo.dao.AppDatabase
 import com.example.notememodemo.model.Memo
@@ -21,18 +23,21 @@ import kotlinx.android.synthetic.main.activity_new_memo.*
 
 class AddMemoActivity : AppCompatActivity() {
 
-    private lateinit var adapter: PhotosAdapter
+    private lateinit var adapter: AddPhotosAdapter
 
     private lateinit var viewModel: MemoViewModel
 
     private var photoUris: List<String>? = null
 
+    private var selectedPhotos: List<Image>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_memo)
 
-        initAdapter()
         initViewModel()
+        initAdapter()
+        getSelectedPhotos()
         title = "Add Memo"
 
         setViewClickListener()
@@ -67,10 +72,7 @@ class AddMemoActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
-            val photos: List<Image> = ImagePicker.getImages(data)
-
-            photoUris = photos.map { it.path }
-            photoUris?.let { adapter.addPhotoUris(it) }
+            viewModel.updateSelectedPhotos(ImagePicker.getImages(data).toMutableList())
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -78,6 +80,15 @@ class AddMemoActivity : AppCompatActivity() {
 
     private fun setViewClickListener() {
         this.constraint_holder_rv_photos.setOnClickListener { addPhotos() }
+    }
+
+    private fun getSelectedPhotos() {
+        viewModel.selectedPhotos.observe(this, Observer { images ->
+            selectedPhotos = images
+
+            photoUris = selectedPhotos?.map { it.path }
+            photoUris?.let { adapter.updateList(it) }
+        })
     }
 
     private fun initViewModel() {
@@ -88,13 +99,17 @@ class AddMemoActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = PhotosAdapter(this)
+        adapter = AddPhotosAdapter(this, viewModel)
         this.rv_add_photos.adapter = adapter
         this.rv_add_photos.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun addPhotos() {
-        ImagePicker.create(this)
+        val picker = ImagePicker.create(this)
+
+        selectedPhotos?.let { picker.origin(ArrayList(it)) }
+
+            picker
 //            .returnMode(ReturnMode.ALL) // set whether pick and / or camera action should return immediate result or not.
             .folderMode(true) // folder mode (false by default)
             .toolbarFolderTitle("Folder") // folder selection title
@@ -117,8 +132,8 @@ class AddMemoActivity : AppCompatActivity() {
     private fun saveMemo () {
         if (this.et_title.text.toString().isNotEmpty()) {
             val title = this.et_title.text.toString()
-            val memo = this.et_memo_input.toString()
-            var photos = Memo.Photos()
+            val memo = this.et_memo_input.text.toString()
+            val photos = Memo.Photos()
             photos.items = photoUris ?: emptyList()
 
             viewModel.insertMemo(

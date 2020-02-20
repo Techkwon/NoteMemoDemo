@@ -7,4 +7,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLightGrey">#C8C8C8</color>
     <color name="colorMemoInput">#6FDFDFDF</color>
+    <color name="transparent">#00000000</color>
 </resources>

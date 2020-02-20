@@ -1,13 +1,12 @@
 package com.example.notememodemo.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.notememodemo.R
-import com.example.notememodemo.adapter.MemoAdapter
+import com.example.notememodemo.adapter.MemoPreviewAdapter
 import com.example.notememodemo.dao.AppDatabase
 import com.example.notememodemo.repository.MemoRepository
 import com.example.notememodemo.util.Caller
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MemoViewModel
 
-    private lateinit var adapter: MemoAdapter
+    private lateinit var adapter: MemoPreviewAdapter
 
     companion object {
 
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = MemoAdapter(this)
+        adapter = MemoPreviewAdapter(this)
         this.rv_memo_list.layoutManager = LinearLayoutManager(this)
         this.rv_memo_list.adapter = adapter
     }

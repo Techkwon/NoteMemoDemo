@@ -10,7 +10,7 @@ import com.example.notememodemo.model.Memo
 @Dao
 interface MemoDao {
 
-    @Query("SELECT * FROM Memo ORDER BY ID")
+    @Query("SELECT * FROM Memo ORDER BY ID DESC")
     fun getMemos(): LiveData<List<Memo>>
 
     @Query("SELECT * FROM Memo WHERE id = :id")
