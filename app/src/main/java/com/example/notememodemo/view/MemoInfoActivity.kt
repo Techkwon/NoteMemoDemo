@@ -20,7 +20,7 @@ import com.example.notememodemo.model.Memo
 import com.example.notememodemo.repository.MemoRepository
 import com.example.notememodemo.util.Caller
 import com.example.notememodemo.util.Caller.EXTRA_MEMO_ID
-import com.example.notememodemo.util.Caller.showToastMessage
+import com.example.notememodemo.util.CommonUtils.showToastMessage
 import com.example.notememodemo.viewmodel.MemoViewModel
 import com.example.notememodemo.viewmodel.MemoViewModelFactory
 import kotlinx.android.synthetic.main.activity_memo_info.*
@@ -84,7 +84,7 @@ class MemoInfoActivity : AppCompatActivity() {
     }
 
     private fun setViews(memo: Memo) {
-        title = "메모 상세"
+        title = getString(R.string.memo_info_title)
 
         val photos = memo.photos.items
         this.tv_memo_title.movementMethod = ScrollingMovementMethod()

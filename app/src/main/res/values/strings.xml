@@ -32,4 +32,11 @@
     <string name="input_photo_url">사진 URL 입력</string>
     <string name="take_new_photo">새로운 사진 촬영</string>
     <string name="select_from_gallery">앨범에서 사진 선택</string>
+    <string name="new_memo">새 메모</string>
+    <string name="file_provider_authority">com.example.notememodemo.fileprovider</string>
+    <string name="memo_info_title">메모 상세</string>
+    <string name="no_title">제목없음</string>
+    <string name="warning_memo_is_on_wrting">작성중인 메모가 있습니다. 종료할까요?</string>
+    <string name="warning_memo_is_edited">글이 수정되었습니다. 종료할까요?</string>
+    <string name="no_memo_on_the_list">메모가 없습니다. \n새로운 메모를 작성해보세요.</string>
 </resources>

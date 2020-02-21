@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="@dimen/padding_10"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.AddMemoActivity">
 
@@ -13,20 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:layout_marginTop="5dp"
-        android:textSize="33sp"
+        android:layout_marginTop="@dimen/margin_5"
+        android:textSize="@dimen/textsize_33"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_holder_rv_photos"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:padding="10dp"
+        android:layout_height="@dimen/height_photo_preview"
+        android:padding="@dimen/padding_10"
         app:layout_constraintTop_toBottomOf="@+id/et_title">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_holder_add_icon"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/width_40"
             android:layout_height="match_parent"
             android:background="@color/colorLightGrey"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_button_add_photos"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/width_40"
+                android:layout_height="@dimen/height_40"
                 android:src="@drawable/ic_add_photo"
                 android:background="@color/colorLightGrey"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,20 @@
             android:id="@+id/rv_add_photos"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/margin_10"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/constraint_holder_add_icon"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_empty_photos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_10"
+            android:text="no selected photos.."
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="italic"
             android:visibility="visible"
             app:layout_constraintStart_toEndOf="@+id/constraint_holder_add_icon"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -60,7 +73,7 @@
         android:id="@+id/constraint_holder_memo_input"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="10dp"
+        android:padding="@dimen/padding_10"
         android:background="@drawable/background_memo_content"
         app:layout_constraintTop_toBottomOf="@+id/constraint_holder_rv_photos"
         app:layout_constraintBottom_toBottomOf="parent">

@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="110dp"
+    android:background="@color/colorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_holder_item_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/padding_10"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
                     android:layout_height="0dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/text_size_title"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -44,7 +45,7 @@
             android:id="@+id/constraint_holder_item_right"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="@dimen/padding_10"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/constraint_holder_item_left"
             app:layout_constraintEnd_toEndOf="parent">

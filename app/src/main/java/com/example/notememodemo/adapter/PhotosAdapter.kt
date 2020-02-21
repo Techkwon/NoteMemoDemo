@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notememodemo.R
-import com.example.notememodemo.util.Caller
+import com.example.notememodemo.util.CommonUtils.displayImage
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.memo_photo_item.view.*
 
@@ -26,7 +26,7 @@ class PhotosAdapter(private val activity: Activity) : RecyclerView.Adapter<Photo
         val imageView = holder.ivPhoto
         val uri = photoUris[position]
 
-        Caller.displayImage(activity, imageView, uri)
+        displayImage(activity, imageView, uri)
     }
 
     internal fun addPhotoUris(uris: List<String>) {

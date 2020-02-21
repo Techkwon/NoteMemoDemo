@@ -6,10 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.notememodemo.R
-import com.example.notememodemo.util.Caller.displayImage
+import com.example.notememodemo.util.CommonUtils.displayImage
 import com.example.notememodemo.view.AddMemoActivity
 import com.example.notememodemo.viewmodel.MemoViewModel
 import kotlinx.android.extensions.LayoutContainer

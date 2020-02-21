@@ -6,19 +6,23 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +36,18 @@ import com.example.notememodemo.util.Caller.CALL_EDIT_MEMO
 import com.example.notememodemo.util.Caller.CALL_NEW_MEMO
 import com.example.notememodemo.util.Caller.EXTRA_CALL_MEMO_ID
 import com.example.notememodemo.util.Caller.EXTRA_CALL_NEW_MEMO_CODE
-import com.example.notememodemo.util.Caller.showToastMessage
+import com.example.notememodemo.util.Caller.callCameraAction
+import com.example.notememodemo.util.Caller.callImagePicker
+import com.example.notememodemo.util.CommonUtils
+import com.example.notememodemo.util.CommonUtils.createPhotoFile
+import com.example.notememodemo.util.CommonUtils.showToastMessage
 import com.example.notememodemo.viewmodel.MemoViewModel
 import com.example.notememodemo.viewmodel.MemoViewModelFactory
 import kotlinx.android.synthetic.main.activity_new_memo.*
+import java.io.File
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddMemoActivity : AppCompatActivity() {
     private var callingType = 0
@@ -47,6 +59,10 @@ class AddMemoActivity : AppCompatActivity() {
     private lateinit var viewModel: MemoViewModel
 
     private var photoUris: List<String>? = null
+
+    private var photoFile: File? = null
+
+    private var originalMemo: String = ""
 
     companion object {
         private const val REQUEST_CAMERA_CODE = 100
@@ -64,12 +80,7 @@ class AddMemoActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        if (callingType == CALL_NEW_MEMO) {
-
-        } else if (callingType == CALL_EDIT_MEMO) {
-
-        }
+        checkTextsBeforeExit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,7 +91,7 @@ class AddMemoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                checkTextsBeforeExit()
                 true
             }
 
@@ -95,7 +106,7 @@ class AddMemoActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CAMERA_CODE && grantResults[0] == 0) {
+        if (requestCode == REQUEST_CAMERA_CODE && grantResults[0] == 0 && grantResults[1] == 0) {
             takePhoto()
         }
     }
@@ -107,7 +118,9 @@ class AddMemoActivity : AppCompatActivity() {
         }
 
         if (requestCode == REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+            photoFile?.absolutePath?.let {
+                viewModel.updateSelectedPhotos(listOf(it))
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data)
@@ -115,23 +128,20 @@ class AddMemoActivity : AppCompatActivity() {
 
     private fun getIntentData() {
         callingType = intent.getIntExtra(EXTRA_CALL_NEW_MEMO_CODE, 0)
-        editMemoId = intent.getIntExtra(EXTRA_CALL_MEMO_ID, -1)
+        if (callingType == CALL_EDIT_MEMO) editMemoId = intent.getIntExtra(EXTRA_CALL_MEMO_ID, -1)
     }
 
-    private fun setViews() {
-        when (callingType) {
-            CALL_NEW_MEMO -> {
-                title = "새 메모"
-            }
-            CALL_EDIT_MEMO -> {
-                getMemo()
-                title = "메모 편집"
-            }
-            else -> {
-                showInvalidRequest()
-            }
+    private fun setViews() = when (callingType) {
+        CALL_NEW_MEMO -> {
+            title = getString(R.string.new_memo)
         }
-
+        CALL_EDIT_MEMO -> {
+            getMemo()
+            title = getString(R.string.edit_memo)
+        }
+        else -> {
+            showInvalidRequest()
+        }
     }
 
     private fun getMemo() {
@@ -145,25 +155,34 @@ class AddMemoActivity : AppCompatActivity() {
         this.et_title.setText(memo.title)
         this.et_memo_input.setText(memo.content)
         viewModel.updateSelectedPhotos(memo.photos.items)
+        originalMemo = memo.content
     }
 
     private fun getSelectedPhotos() {
         viewModel.selectedPhotos.observe(this, Observer { images ->
             photoUris = images
-            photoUris?.let { adapter.updateList(it) }
+
+            if (images.isEmpty()) {
+                this.rv_add_photos.visibility = View.GONE
+                this.tv_empty_photos.visibility = View.VISIBLE
+            } else {
+                adapter.updateList(images)
+                this.rv_add_photos.visibility = View.VISIBLE
+                this.tv_empty_photos.visibility = View.GONE
+            }
         })
     }
 
     private fun saveMemo () {
-        if (this.et_title.text.toString().isNotEmpty()) {
+        if (this.et_memo_input.text.toString().isNotEmpty()) {
             val title = this.et_title.text.toString()
             val memoContent = this.et_memo_input.text.toString()
             val photos = Memo.Photos()
             photos.items = photoUris ?: emptyList()
 
             val memo = Memo(
-                id = editMemoId, // auto increment
-                title = title,
+                id = editMemoId, // id = 0, auto increment
+                title = if (title.isEmpty()) getString(R.string.no_title) else title,
                 content = memoContent,
                 photos = photos)
 
@@ -190,39 +209,22 @@ class AddMemoActivity : AppCompatActivity() {
 
         dialog.show()
 
-        btnAddFromGallery.setOnClickListener { selectPhotos(); dialog.dismiss() }
+        btnAddFromGallery.setOnClickListener { callImagePicker(this); dialog.dismiss() }
         btnAddFromCamera.setOnClickListener { takePhoto(); dialog.dismiss() }
         btnAddFromUrl.setOnClickListener { showAddUrlDialog(); dialog.dismiss() }
     }
 
-    private fun selectPhotos() {
-        ImagePicker.create(this)
-            .folderMode(true)
-            .toolbarFolderTitle("Folder")
-            .toolbarImageTitle("Tap to select")
-            .toolbarArrowColor(Color.WHITE)
-            .includeVideo(false)
-            .multi()
-            .limit(20)
-            .showCamera(true)
-            .imageDirectory("Camera")
-//            .theme(R.style.CustomImagePickerTheme)
-            .enableLog(false)
-            .start()
-    }
-
     private fun takePhoto() {
-        if (isCameraPermissionGranted())
-            startCameraIntent()
-        else
-            requestCameraPermission()
+        if (isCameraPermissionGranted()) makePhotoFile()
+        else requestCameraPermission()
     }
 
-    private fun startCameraIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-            intent.resolveActivity(packageManager)?.also {
-                startActivityForResult(intent, REQUEST_CAMERA_CODE)
-            }
+    private fun makePhotoFile() {
+        try {
+            photoFile = createPhotoFile(this)
+            photoFile?.let { callCameraAction(this, REQUEST_CAMERA_CODE, it) }
+        } catch (e: Exception) {
+            showToastMessage(this, "Error: "  + e.message.toString())
         }
     }
 
@@ -250,12 +252,18 @@ class AddMemoActivity : AppCompatActivity() {
     }
 
     private fun isCameraPermissionGranted(): Boolean {
-        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        return permissionCheck == PackageManager.PERMISSION_GRANTED
+        val cameraPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val writePermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return cameraPermissionCheck == PackageManager.PERMISSION_GRANTED
+                && writePermissionCheck == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_CODE)
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_CAMERA_CODE
+        )
     }
 
     private fun isUrlValid(url: String): Boolean {
@@ -277,6 +285,35 @@ class AddMemoActivity : AppCompatActivity() {
 
     private fun setViewClickListener() {
         this.constraint_holder_rv_photos.setOnClickListener { showAddPhotosDialog() }
+    }
+
+    private fun checkTextsBeforeExit() {
+        if (callingType == CALL_NEW_MEMO) {
+            if (this.et_memo_input.text.toString().isNotEmpty()) {
+                showWarningBeforeExit(getString(R.string.warning_memo_is_on_wrting))
+            } else {
+                finish()
+            }
+        } else if (callingType == CALL_EDIT_MEMO) {
+            if (this.et_memo_input.text.toString() != originalMemo) {
+                showWarningBeforeExit(getString(R.string.warning_memo_is_edited))
+            } else {
+                finish()
+            }
+        }
+    }
+
+    private fun showWarningBeforeExit(msg: String) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(msg)
+            .setCancelable(true)
+            .setNegativeButton(getString(R.string.cancel)) { view, _ ->
+                view.cancel()
+            }.setPositiveButton(getString(R.string.confirm)) { view, _ ->
+                view.cancel()
+                finish()
+            }.create()
+        dialog.show()
     }
 
     private fun showInvalidRequest() {

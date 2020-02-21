@@ -6,12 +6,22 @@
     android:id="@+id/constraint_main_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.MemoPreviewActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_memo_list"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_empty_memo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_memo_on_the_list"
+        android:textSize="20sp"
+        android:textStyle="italic"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_add_memo"
@@ -21,8 +31,8 @@
         app:fab_colorNormal="@color/colorAccent"
         app:fab_colorPressed="@color/colorAccent"
         android:foregroundGravity="center"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:layout_marginBottom="@dimen/margin_20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
