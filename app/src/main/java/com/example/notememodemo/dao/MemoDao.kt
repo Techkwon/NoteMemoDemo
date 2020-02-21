@@ -1,10 +1,8 @@
 package com.example.notememodemo.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 import com.example.notememodemo.model.Memo
 
 @Dao
@@ -18,4 +16,10 @@ interface MemoDao {
 
     @Insert(onConflict = REPLACE)
     fun insertMemo(memo: Memo)
+
+    @Update
+    fun updateMemo(memo: Memo)
+
+    @Delete
+    fun deleteMemo(memo: Memo)
 }

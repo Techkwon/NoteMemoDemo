@@ -17,15 +17,5 @@ open class BaseModel {
 
             return builder.create()
         }
-
-        fun <T> deepCopy(`object`: T, type: Class<T>): T? {
-            return try {
-                BaseModel.gson().fromJson(BaseModel.gson().toJson(`object`, type), type)
-            } catch (e: Exception) {
-                e.printStackTrace()
-
-                null
-            }
-        }
     }
 }

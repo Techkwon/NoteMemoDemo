@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_edit_memo"
+        android:icon="@drawable/ic_edit_memo"
+        android:title="@string/edit_memo"
+        tools:ignore="AppCompatResource"/>
+
+    <item
+        android:id="@+id/menu_remove_memo"
+        android:icon="@drawable/ic_remove_memo"
+        android:title="@string/remove_memo"
+        tools:ignore="AppCompatResource"/>
+
+</menu>

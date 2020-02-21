@@ -7,7 +7,9 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.notememodemo.R
+import com.example.notememodemo.util.Caller.displayImage
 import com.example.notememodemo.view.AddMemoActivity
 import com.example.notememodemo.viewmodel.MemoViewModel
 import kotlinx.android.extensions.LayoutContainer
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.memo_add_photo_item.view.*
 class AddPhotosAdapter(private val activity: AddMemoActivity,
                        private val viewModel: MemoViewModel) : RecyclerView.Adapter<AddPhotosAdapter.ImageViewHolder>() {
 
-    private val photoUris = ArrayList<String>()
+    private var photoUris = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.memo_add_photo_item, parent, false)
@@ -28,8 +30,8 @@ class AddPhotosAdapter(private val activity: AddMemoActivity,
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val imageView = holder.ivPhoto
         val uri = photoUris[position]
-        Glide.with(activity).load(uri).into(imageView)
 
+        displayImage(activity, imageView, uri)
         holder.ibRemove.setOnClickListener { removePhoto(position) }
     }
 
@@ -38,8 +40,7 @@ class AddPhotosAdapter(private val activity: AddMemoActivity,
     }
 
     internal fun updateList(uris: List<String>) {
-        photoUris.clear()
-        photoUris.addAll(uris)
+        photoUris = ArrayList(uris)
         notifyDataSetChanged()
     }
 

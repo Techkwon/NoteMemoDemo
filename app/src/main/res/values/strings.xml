@@ -17,4 +17,19 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="save_memo_kr">저장</string>
+    <string name="menu_more">menu_more</string>
+    <string name="edit_memo">메모 편집</string>
+    <string name="remove_memo">메모 삭제</string>
+    <string name="invalid_url">유효하지 않은 URL입니다.</string>
+    <string name="input_url">URL을 입력하세요</string>
+    <string name="confirm">확인</string>
+    <string name="title_delete_memo">메모 삭제</string>
+    <string name="sure_to_delete_memo">메모를 정말 삭제하시겠습니까?</string>
+    <string name="cancel">취소</string>
+    <string name="delete">삭제</string>
+    <string name="memo_is_deleted">메모가 삭제되었습니다</string>
+    <string name="wrong_request_message">잘못된 요청입니다.</string>
+    <string name="input_photo_url">사진 URL 입력</string>
+    <string name="take_new_photo">새로운 사진 촬영</string>
+    <string name="select_from_gallery">앨범에서 사진 선택</string>
 </resources>

@@ -20,9 +20,17 @@ constructor(private val dao: MemoDao) {
         return dao.getMemos()
     }
 
-    internal suspend fun getMemoById(id: Int): Memo = dao.getMemoById(id)
+    internal suspend fun getMemoById(id: Int) = dao.getMemoById(id)
 
     internal fun insertMemo(memo: Memo) {
         dao.insertMemo(memo)
+    }
+
+    internal fun updateMemo(memo: Memo) {
+        dao.updateMemo(memo)
+    }
+
+    internal fun deleteMemo(memo: Memo) {
+        dao.deleteMemo(memo)
     }
 }

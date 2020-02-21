@@ -44,7 +44,12 @@ class MemoPreviewAdapter(private val activity: Activity) : RecyclerView.Adapter<
             } else {
                 holder.photoHolder.visibility = View.VISIBLE
                 val photoUri = this.photos.items[0]
-                Glide.with(activity).load(photoUri).into(holder.ivPhoto)
+
+                Glide
+                    .with(activity)
+                    .load(photoUri)
+                    .error(R.drawable.ic_placeholder_error)
+                    .into(holder.ivPhoto)
             }
         }
     }

@@ -13,12 +13,17 @@ import com.example.notememodemo.util.Caller
 import com.example.notememodemo.viewmodel.MemoViewModel
 import com.example.notememodemo.viewmodel.MemoViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MemoViewModel
 
     private lateinit var adapter: MemoPreviewAdapter
+
+    private val testUrl = "http://imgnedews.naver.net/image/144/2019/10/31/0000639701_001_201910310853551193.jpg"
 
     companion object {
 
@@ -31,12 +36,26 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         initAdapter()
         getMemos()
+
+//        GlobalScope.launch {
+//            check()
+//        }
+
     }
 
-    private fun setActionBar() {
+    private suspend fun check() {
+
+        withContext(Dispatchers.IO) {
+            val url = URL("http://imgnedews.naver.net/image/144/2019/10/31/0000639701_001_201910310853551193.jpg")
+            val connection = url.openConnection() as HttpURLConnection
+
+            connection.requestMethod = "GET"
+//            val responseCode = connection.responseCode
+//            println("woogear check=$responseCode")
+
+        }
 
     }
-
     private fun initViewModel() {
         val dao = AppDatabase.getInstance(this).memoDao()
         val repository = MemoRepository.getInstance(dao)

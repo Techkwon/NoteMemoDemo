@@ -5,8 +5,7 @@ import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "Memo")
 data class Memo (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val content: String,
     @field:Embedded val photos: Photos) : BaseModel() {
