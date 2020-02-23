@@ -20,7 +20,7 @@ object Caller {
     const val CALL_NEW_MEMO = 2001
     const val CALL_EDIT_MEMO = 2002
 
-    fun callNewMemo(activity: Activity, calledFrom: Int) {
+    fun callNewMemo(activity: Activity) {
         val intent = Intent(activity, AddMemoActivity::class.java)
         intent.putExtra(EXTRA_CALL_NEW_MEMO_CODE, CALL_NEW_MEMO)
         activity.startActivity(intent)

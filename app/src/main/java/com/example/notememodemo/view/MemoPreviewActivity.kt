@@ -63,6 +63,6 @@ class MemoPreviewActivity : AppCompatActivity() {
     }
 
     private fun setViewClickListener() {
-        this.fab_add_memo.setOnClickListener { Caller.callNewMemo(this, 0) }
+        this.fab_add_memo.setOnClickListener { Caller.callNewMemo(this) }
     }
 }
