@@ -38,5 +38,7 @@
     <string name="no_title">제목없음</string>
     <string name="warning_memo_is_on_wrting">작성중인 메모가 있습니다. 종료할까요?</string>
     <string name="warning_memo_is_edited">글이 수정되었습니다. 종료할까요?</string>
-    <string name="no_memo_on_the_list">메모가 없습니다. \n새로운 메모를 작성해보세요.</string>
+    <string name="no_memo_on_the_list">저장된 메모가 없습니다. \n새로운 메모를 작성해보세요.</string>
+    <string name="url_hint">http://</string>
+    <string name="no_photos_selected">첨부된 사진이 없습니다..</string>
 </resources>

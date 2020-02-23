@@ -30,8 +30,7 @@
                 android:value=".view.MemoPreviewActivity" />
         </activity>
         <activity
-            android:name=".view.AddMemoActivity"
-            android:windowSoftInputMode="adjustPan|stateVisible">
+            android:name=".view.AddMemoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MemoPreviewActivity" />

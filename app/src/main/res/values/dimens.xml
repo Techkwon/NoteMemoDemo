@@ -3,11 +3,15 @@
     <dimen name="text_size_title">18sp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="margin_20">20dp</dimen>
-    <dimen name="textsize_33">33sp</dimen>
+    <dimen name="text_size_33">33sp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="height_photo_preview">120dp</dimen>
     <dimen name="width_40">40dp</dimen>
     <dimen name="height_40">40dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="padding_20">20dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="memo_preview_height">110dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="edit_text_min_height">400dp</dimen>
 </resources>

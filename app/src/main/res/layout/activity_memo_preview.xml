@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/no_memo_on_the_list"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_20"
         android:textStyle="italic"/>
 
     <com.github.clans.fab.FloatingActionButton
