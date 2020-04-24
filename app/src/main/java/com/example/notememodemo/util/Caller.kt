@@ -12,7 +12,6 @@ import com.example.notememodemo.view.AddMemoActivity
 import java.io.File
 
 object Caller {
-
     const val EXTRA_MEMO_ID = "note.memo:memo_id"
     const val EXTRA_CALL_NEW_MEMO_CODE = "note.memo:call_new_memo_code"
     const val EXTRA_CALL_MEMO_ID = "note.memo:call_memo_id"
