@@ -13,11 +13,11 @@ import java.io.File
 
 object Caller {
     const val EXTRA_MEMO_ID = "note.memo:memo_id"
-    
+
     const val EXTRA_CALL_NEW_MEMO_CODE = "note.memo:call_new_memo_code"
     const val EXTRA_CALL_MEMO_ID = "note.memo:call_memo_id"
 
-    const val CALL_NEW_MEMO = 2001
+    const val CALL_NEW_MEMO = 2001 //test
     const val CALL_EDIT_MEMO = 2002
 
     fun callNewMemo(activity: Activity) {
